@@ -1,10 +1,11 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <iomanip>
+#include <cstdint>
 
 #include "log.h"
 #include "VertexTensor.h"
+#include "TensorArray.h"
+#define PI 3.14159265358979323846
 
 
 
@@ -25,7 +26,7 @@ int main() {
     Log.SetLogLevel(LOG_LEVEL_INFO);
 
 
-    const char* filename = "heart.stl"; // Replace with your STL file name
+    const char* filename = "/home/dave/stl2ascii/src/heart.stl"; // Replace with your STL file name
     std::ifstream file(filename, std::ios::binary);
 
     if (!file) {
@@ -40,9 +41,11 @@ int main() {
     uint32_t numFacets;
     file.read(reinterpret_cast<char*>(&numFacets), sizeof(uint32_t));
 
+    // Tensor array storing all vertex tensors
+    TensorArray tensor_array = TensorArray(numFacets);
 
     // Read facets
-    for (uint32_t i = 0; i < numFacets; ++i) {
+    for (uint32_t i = 0; i < numFacets; i++) {
         Facet facet;
         VertexTensor VT;
 
@@ -54,8 +57,12 @@ int main() {
 
         VT.FromFacet(facet.vertex1, facet.vertex2, facet.vertex3, facet.normal);
 
-        std::cout << "Vertex: (" << VT.x << ", " << VT.y << ", " << VT.z << ")\n";
-        std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
+        if (i < 10){
+            std::cout << "Vertex" << i << ": (" << VT.x << ", " << VT.y << ", " << VT.z << ")\n";
+            std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
+        }
+
+        tensor_array.AddTensor(&VT);
     }
     file.close();
 
@@ -63,7 +70,16 @@ int main() {
     std::cout << "Number of facets: " << numFacets << "\n";
     std::cout << "------------------------------------------\n";
 
-    if (numFacets >= 10000) Log.Warning("Excessive facets will destory your pc, just saying!");
+    if (numFacets >= 10000) Log.Warning("Excessive facets might eat your PC, just saying!");
+    
+    tensor_array.RotateArray(PI/4.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the a-axis
+
+    for (uint32_t i = 0; i < 10; i++) {
+        VertexTensor VT;
+        VT = tensor_array.GetTensor(i);
+        std::cout << "Vertex" << i << ": (" << VT.x << ", " << VT.y << ", " << VT.z << ")\n";
+        std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
+    }
 
     return 0;
 }

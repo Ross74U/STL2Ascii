@@ -1,5 +1,6 @@
 #ifndef VERTEX_TENSOR
 #define VERTEX_TENSOR
+#include <cmath>
 
 class VertexTensor{
 public:
@@ -13,7 +14,9 @@ public:
 public:
     VertexTensor();
     void FromFacet(float* vertex1, float* vertex2, float* vertex3, float* normal);
-    VertexTensor Rotate(float angle_x, float angle_y, float angle_z);
+    void RotateX(float angle);
+    void RotateY(float angle);
+    void RotateZ(float angle);
 
 private:
     float* _centroid(float* vertex1, float* vertex2, float* vertex3);
