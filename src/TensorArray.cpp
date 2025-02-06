@@ -26,7 +26,6 @@ VertexTensor TensorArray::GetTensor(uint32_t index){
 }
 
 
-
 void TensorArray::RotateArray(float angle_x, float angle_y, float angle_z){
     if (angle_x != 0){
         for (uint32_t i = 0; i<current_size; i++){
