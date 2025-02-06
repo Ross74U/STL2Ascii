@@ -19,7 +19,6 @@ struct Facet {
 
 
 
-
 int main() {
 
     Logging Log;

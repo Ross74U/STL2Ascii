@@ -14,6 +14,10 @@ public:
     void AddTensor(VertexTensor* tensor);
     VertexTensor GetTensor(uint32_t index);
     void RotateArray(float angle_x, float angle_y, float angle_z);
+
+    /* TensorArray GetProjection(void) */
+    /* generates new tensor array with new x and y, (z, norms unchanged) */
+
 };
 
 #endif
