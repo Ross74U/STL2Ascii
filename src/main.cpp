@@ -36,7 +36,7 @@ int main() {
     // Skip the 80-byte header
     file.seekg(80, std::ios::beg);
 
-    // Read the number of facets (4 bytes)
+    // Read the number of facets (4 byt wqzaes)
     uint32_t numFacets;
     file.read(reinterpret_cast<char*>(&numFacets), sizeof(uint32_t));
 
@@ -80,5 +80,8 @@ int main() {
         std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
     }
 
+
+
+    Log.Warning("You should have run free() on all initialized VertexArrays at this point to prevent memory leak!");
     return 0;
 }
