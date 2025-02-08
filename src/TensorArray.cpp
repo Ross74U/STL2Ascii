@@ -2,14 +2,19 @@
 
 
 
-TensorArray::TensorArray(uint32_t len) : max_size(len), current_size(0){
-    array = new VertexTensor[len];
+/* Default constructor*/
+TensorArray::TensorArray() : current_size(0){
+    array = std::vector<VertexTensor>();
+}
+
+TensorArray::TensorArray(int len) : current_size(0){
+    array = std::vector<VertexTensor>(len);
 }
 
 
 
 void TensorArray::AddTensor(VertexTensor* tensor){
-    if (current_size >= max_size){
+    if (current_size >= array.size()){
         return;
     }
 
@@ -24,6 +29,8 @@ VertexTensor TensorArray::GetTensor(uint32_t index){
     VertexTensor tensor = array[index];
     return tensor;
 }
+
+
 
 
 void TensorArray::RotateArray(float angle_x, float angle_y, float angle_z){
@@ -42,4 +49,24 @@ void TensorArray::RotateArray(float angle_x, float angle_y, float angle_z){
             array[i].RotateZ(angle_z);
         }
     }
+}
+
+
+
+
+TensorArray TensorArray::GetProjection(float disp_z, float proj_z){
+    TensorArray new_array = TensorArray(current_size);
+
+    for (uint16_t i = 0; i < current_size; i++){
+        VertexTensor new_tensor = VertexTensor();
+
+        new_tensor.z = array[i].z + disp_z;
+        new_tensor.x = array[i].x * new_tensor.z / proj_z;
+        new_tensor.y = array[i].y * new_tensor.z / proj_z;
+        new_tensor.norm_x = array[i].norm_x;
+        new_tensor.norm_y = array[i].norm_y;
+        new_tensor.norm_z = array[i].norm_z;
+    }
+
+    return new_array;
 }
