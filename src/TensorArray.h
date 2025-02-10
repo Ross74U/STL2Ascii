@@ -12,6 +12,7 @@
 class TensorArray{
 private:
     std::vector<VertexTensor> array;
+public:
     uint32_t current_size;
 public:
     TensorArray();
@@ -26,6 +27,7 @@ public:
     //         proj_z: distance of the projection away from the user.
     // for more info on params see https://www.a1k0n.net/2011/07/20/donut-math.html
 
+    void setMid(void);
 };
 
 #endif

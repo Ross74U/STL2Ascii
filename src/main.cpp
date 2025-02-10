@@ -5,6 +5,10 @@
 #include "log.h"
 #include "VertexTensor.h"
 #include "TensorArray.h"
+#include "Render.h"
+#include <chrono>
+#include <thread>
+
 #define PI 3.14159265358979323846
 
 
@@ -25,7 +29,7 @@ int main() {
     Log.SetLogLevel(LOG_LEVEL_INFO);
 
 
-    const char* filename = "/home/dave/stl2ascii/src/heart.stl"; // Replace with your STL file name
+    const char* filename = "/home/dave/stl2ascii/src/heart_oct6.stl"; // Replace with your STL file name
     std::ifstream file(filename, std::ios::binary);
 
     if (!file) {
@@ -70,18 +74,23 @@ int main() {
     std::cout << "------------------------------------------\n";
 
     if (numFacets >= 10000) Log.Warning("Excessive facets might eat your PC, just saying!");
-    
-    tensor_array.RotateArray(PI/4.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the a-axis
 
-    for (uint32_t i = 0; i < 10; i++) {
-        VertexTensor VT;
-        VT = tensor_array.GetTensor(i);
-        std::cout << "Vertex" << i << ": (" << VT.x << ", " << VT.y << ", " << VT.z << ")\n";
-        std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
+    tensor_array.setMid();
+    tensor_array.RotateArray(PI/4.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the -axis
+
+    Render MyRender = Render(200, 50, 300.0f, 100.0f);
+    MyRender.SetLighting(-1.0f, 0.0f, 1.0f);
+    MyRender.tensors = tensor_array;
+    MyRender.setSize(8.0f);
+
+    while(1){
+        MyRender.Interpolate();
+        MyRender.ToConsole();
+        MyRender.tensors.RotateArray(PI/32.0f, PI/32.0f, 0.0f);
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
     }
 
 
-
-    Log.Warning("You should have run free() on all initialized VertexArrays at this point to prevent memory leak!");
+    Log.Warning("You should have run free() on all initialized arrays at this point to prevent memory leak!");
     return 0;
 }
