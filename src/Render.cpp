@@ -48,13 +48,14 @@ void Render::Interpolate(void){
         }
     }
 
-    std::cout << "finished\n";
+    //std::cout << "finished\n";
 }
 
 
 
 void Render::ToConsole(void){
-    std::cout << "\n";
+    std::cout << "\x1b[H";
+    std::cout << ANSI_PINK;
     for (uint32_t h = 0; h < height; h++)
     {
         for (uint32_t w = 0; w < width; w++)
@@ -64,8 +65,8 @@ void Render::ToConsole(void){
             }
             else{
                 //std::cout << Interpolation[h][w];
-                int lumenIndex = Interpolation[h][w] * 10 + 10; //ensure everything is positive
-                std::cout << "..,,--~~::;;==!!**##$$@@"[lumenIndex];
+                int lumenIndex = (Interpolation[h][w] * 10.0 + 10.0); //ensure everything is positive
+                std::cout << "  ..,,,---~:;=!*##$$@@@"[lumenIndex];
             }
             Interpolation[h][w] = 0.0f;
             Zbuffer[h][w] = 0.0f;
@@ -101,10 +102,10 @@ void Render::SetLighting(float lx, float ly, float lz){
 
 
 
-void Render::setSize(float multiplier){
+void Render::setSize(float multiplierX, float multiplierY){
     TensorArray projected_tensors = tensors.GetProjection(displacement_z, projection_z);
-    size_x = _getSizeX(projected_tensors) * multiplier/2;
-    size_y = _getSizeY(projected_tensors) * multiplier;
+    size_x = _getSizeX(projected_tensors) * multiplierX;
+    size_y = _getSizeY(projected_tensors) * multiplierY;
     delta_x = size_x/width;
     delta_y = size_y/height;
 }

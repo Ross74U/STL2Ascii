@@ -29,7 +29,7 @@ int main() {
     Log.SetLogLevel(LOG_LEVEL_INFO);
 
 
-    const char* filename = "/home/dave/stl2ascii/src/heart_oct6.stl"; // Replace with your STL file name
+    const char* filename = "WIDE_CAT_2.stl"; // Replace with your STL file name
     std::ifstream file(filename, std::ios::binary);
 
     if (!file) {
@@ -69,6 +69,10 @@ int main() {
     }
     file.close();
 
+
+
+
+
     std::cout << "------------------------------------------\n";
     std::cout << "Number of facets: " << numFacets << "\n";
     std::cout << "------------------------------------------\n";
@@ -76,18 +80,18 @@ int main() {
     if (numFacets >= 10000) Log.Warning("Excessive facets might eat your PC, just saying!");
 
     tensor_array.setMid();
-    tensor_array.RotateArray(PI/4.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the -axis
+    tensor_array.RotateArray(PI/2.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the -axis
 
-    Render MyRender = Render(200, 50, 300.0f, 100.0f);
-    MyRender.SetLighting(-1.0f, 0.0f, 1.0f);
+    Render MyRender = Render(400, 100, 300.0f, 100.0f);  // first two, canvas size, 2nd two, z_disp and z_proj
+    MyRender.SetLighting(-1.0f, 0.0f, 1.0f);    // lighting vector
     MyRender.tensors = tensor_array;
-    MyRender.setSize(8.0f);
+    MyRender.setSize(4.0f, 4.0f); // mess with this value if u get segmentation fault
 
     while(1){
         MyRender.Interpolate();
         MyRender.ToConsole();
-        MyRender.tensors.RotateArray(PI/32.0f, PI/32.0f, 0.0f);
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        MyRender.tensors.RotateArray(0.0f, PI/32.0f, 0.0f);
+        std::this_thread::sleep_for(std::chrono::milliseconds(70)); //wait for x ms
     }
 
 

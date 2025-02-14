@@ -9,6 +9,8 @@
 #include <cmath>
 #include <iostream>
 
+#define ANSI_PINK "\e[38;5;212m" // https://gist.github.com/JBlond/2fea43a3049b38287e5e9cefc87b2124
+
 class Render{
 
 private:
@@ -80,10 +82,7 @@ public:
     multiplier: the ratio of the canvas to the x,y range of the stl
     this should be run once the tensors have been set
     */
-    void setSize(float multiplier);
-
-
-    void setMid(void);
+    void setSize(float multiplierX, float multiplierY);
 };
 
 #endif
