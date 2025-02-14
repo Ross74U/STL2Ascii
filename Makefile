@@ -6,7 +6,7 @@ CXXFLAGS = -std=c++17 -Wall
 TARGET = main
 
 # Source files and object files
-SRCS = src/main.cpp src/log.cpp src/VertexTensor.cpp
+SRCS = src/main.cpp src/log.cpp src/VertexTensor.cpp src/TensorArray.cpp src/Render.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 all: $(TARGET)
