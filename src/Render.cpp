@@ -66,7 +66,7 @@ void Render::ToConsole(void){
             else{
                 //std::cout << Interpolation[h][w];
                 int lumenIndex = (Interpolation[h][w] * 10.0 + 10.0); //ensure everything is positive
-                std::cout << "  ..,,,---~:;=!*##$$@@@"[lumenIndex];
+                std::cout << "  ..,,--~:;=!**##$$@@@"[lumenIndex];
             }
             Interpolation[h][w] = 0.0f;
             Zbuffer[h][w] = 0.0f;

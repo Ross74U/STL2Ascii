@@ -29,7 +29,7 @@ int main() {
     Log.SetLogLevel(LOG_LEVEL_INFO);
 
 
-    const char* filename = "WIDE_CAT_2.stl"; // Replace with your STL file name
+    const char* filename = "heart_oct6.stl"; // Replace with your STL file name
     std::ifstream file(filename, std::ios::binary);
 
     if (!file) {
@@ -59,12 +59,12 @@ int main() {
         file.read(reinterpret_cast<char*>(&facet.attributeByteCount), sizeof(uint16_t));                                           // skip over the attribute byte count
 
         VT.FromFacet(facet.vertex1, facet.vertex2, facet.vertex3, facet.normal);
-
+/*
         if (i < 10){
             std::cout << "Vertex" << i << ": (" << VT.x << ", " << VT.y << ", " << VT.z << ")\n";
             std::cout << "Normal: (" << VT.norm_x << ", " << VT.norm_y << ", " << VT.norm_z << ")\n";
         }
-
+*/
         tensor_array.AddTensor(&VT);
     }
     file.close();
@@ -73,24 +73,24 @@ int main() {
 
 
 
-    std::cout << "------------------------------------------\n";
-    std::cout << "Number of facets: " << numFacets << "\n";
-    std::cout << "------------------------------------------\n";
+    //std::cout << "------------------------------------------\n";
+   // std::cout << "Number of facets: " << numFacets << "\n";
+    //std::cout << "------------------------------------------\n";
 
-    if (numFacets >= 10000) Log.Warning("Excessive facets might eat your PC, just saying!");
+    //if (numFacets >= 10000) Log.Warning("Excessive facets might eat your PC, just saying!");
 
     tensor_array.setMid();
     tensor_array.RotateArray(PI/2.0f, 0.0f, 0.0f); // rotate tensors by 45 degrees about the -axis
 
-    Render MyRender = Render(400, 100, 300.0f, 100.0f);  // first two, canvas size, 2nd two, z_disp and z_proj
+    Render MyRender = Render(200, 50, 300.0f, 100.0f);  // first two, canvas size, 2nd two, z_disp and z_proj
     MyRender.SetLighting(-1.0f, 0.0f, 1.0f);    // lighting vector
     MyRender.tensors = tensor_array;
-    MyRender.setSize(4.0f, 4.0f); // mess with this value if u get segmentation fault
+    MyRender.setSize(3.0f, 6.0f); // mess with this value if u get segmentation fault
 
     while(1){
         MyRender.Interpolate();
         MyRender.ToConsole();
-        MyRender.tensors.RotateArray(0.0f, PI/32.0f, 0.0f);
+        MyRender.tensors.RotateArray(0.0f, PI/32.0f, PI/64.0f);
         std::this_thread::sleep_for(std::chrono::milliseconds(70)); //wait for x ms
     }
 
