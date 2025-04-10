@@ -34,10 +34,12 @@ private:
     float lighting_y;
     float lighting_z;
 
-    /* holds the final product of interpolation, 2 dimensional vector with luminence values*/
+    /* holds the final product of interpolation
+     * 2 dimensional vector with luminence values*/
     std::vector<std::vector<float>> Interpolation;
 
-    /* holds the z value of the closest vertexTensor to the user, mirrors Interpolation*/
+    /* holds the z value of the closest vertexTensor to the user
+     * mirrors Interpolation*/
     std::vector<std::vector<float>> Zbuffer;
 
 public:
@@ -70,8 +72,6 @@ public:
     void Interpolate(void);
 
     void ToConsole(void); // prints the interpolation in ascii to console;
-
-
     void SetProjectionZ(float proj_z);
     void SetDisplacementZ(float disp_z);
 
